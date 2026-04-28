@@ -1,6 +1,7 @@
 package br.edu.ifsp.scl.sc3043894.fasttripplanner
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -23,9 +24,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.text.isDigitsOnly
 import br.edu.ifsp.scl.sc3043894.fasttripplanner.ui.theme.FastTripPlannerTheme
 
 class MainActivity : ComponentActivity() {
@@ -69,9 +72,33 @@ private fun FastTripPlannerTopBarPreview(){
 @Composable
 fun FastTripPlanner( modifier: Modifier = Modifier) {
 
+    val context = LocalContext.current
+
     var destiny by remember { mutableStateOf("") }
     var duration by remember { mutableStateOf("") }
     var dailyBudget by remember { mutableStateOf("") }
+
+    fun validateData(): Boolean{
+        val durationInt = duration.toIntOrNull()
+        val dailyBudgetDouble = dailyBudget.toDoubleOrNull()
+
+        if(destiny.isBlank()){
+            Toast.makeText(context, "Informe o destino da viagem", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        if(durationInt == null || durationInt <= 0) {
+            Toast.makeText(context, "Informe um número de dias válido e maior que zero", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if(dailyBudgetDouble== null || dailyBudgetDouble <= 0) {
+            Toast.makeText(context, "Informe um orçamento diário válido e maior que zero", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        Toast.makeText(context, "Dados válidos", Toast.LENGTH_SHORT).show()
+        return true
+    }
+
     Column(
         modifier = modifier.fillMaxWidth().padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -94,10 +121,12 @@ fun FastTripPlanner( modifier: Modifier = Modifier) {
         )
 
         Button(
-            onClick = {},
+            onClick = {validateData()},
             modifier = Modifier.padding(10.dp)
         ) { Text(text = "Choose Trip Options")}
     }
+
+
 
 }
 
