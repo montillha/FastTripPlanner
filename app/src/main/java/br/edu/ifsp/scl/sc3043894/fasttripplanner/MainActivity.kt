@@ -1,5 +1,6 @@
 package br.edu.ifsp.scl.sc3043894.fasttripplanner
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -94,7 +95,6 @@ fun FastTripPlanner( modifier: Modifier = Modifier) {
             Toast.makeText(context, "Informe um orçamento diário válido e maior que zero", Toast.LENGTH_SHORT).show()
             return false
         }
-        Toast.makeText(context, "Dados válidos", Toast.LENGTH_SHORT).show()
         return true
     }
 
@@ -120,7 +120,16 @@ fun FastTripPlanner( modifier: Modifier = Modifier) {
         )
 
         Button(
-            onClick = {validateData()},
+            onClick = {
+                if(validateData()){
+                    val intent  = Intent(context, TripOptionsActivity::class.java)
+                    intent.putExtra("EXTRA_DESTINY",destiny)
+                    intent.putExtra("EXTRA_DURATION",duration)
+                    intent.putExtra("EXTRA_DAILY_BUDGET",dailyBudget)
+                    context.startActivity(intent)
+                }
+
+            },
             modifier = Modifier.padding(10.dp)
         ) { Text(text = "Escolher opções de viagem")}
     }
