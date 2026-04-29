@@ -141,8 +141,8 @@ fun FastTripPlanner( modifier: Modifier = Modifier) {
                 if(validateData()){
                     val intent  = Intent(context, TripOptionsActivity::class.java)
                     intent.putExtra("EXTRA_DESTINY",destiny)
-                    intent.putExtra("EXTRA_DURATION",duration)
-                    intent.putExtra("EXTRA_DAILY_BUDGET",dailyBudget)
+                    intent.putExtra("EXTRA_DURATION",duration.toInt())
+                    intent.putExtra("EXTRA_DAILY_BUDGET",dailyBudget.toDouble())
                     context.startActivity(intent)
                 }
 
