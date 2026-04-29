@@ -117,17 +117,20 @@ fun FastTripPlanner( modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         OutlinedTextField(
+            modifier = Modifier.padding(10.dp),
             value = destiny,
             onValueChange = {destiny = it},
             label =  { Text( text = "Destino") }
         )
         OutlinedTextField(
+            modifier = Modifier.padding(10.dp),
             value = duration,
             onValueChange = {duration = it},
             label =  { Text( text = "Número de dias") }
 
         )
         OutlinedTextField(
+            modifier = Modifier.padding(10.dp),
             value = dailyBudget,
             onValueChange = {dailyBudget = it},
             label =  { Text( text = "Orçamento Diário") }
