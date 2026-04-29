@@ -29,6 +29,13 @@ class TripResumeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        val destiny = intent.getStringExtra("EXTRA_DESTINY") ?:""
+        val duration = intent.getIntExtra("EXTRA_DURATION",1)
+        val dailyBudget = intent.getDoubleExtra("EXTRA_DAILY_BUDGET",1.0)
+        val accommodation = intent.getStringExtra("EXTRA_ACCOMMODATION") ?: ""
+        val services = intent.getStringArrayListExtra("EXTRA_SERVICES")?: arrayListOf()
+
         setContent {
             FastTripPlannerTheme {
                 Scaffold(
@@ -36,6 +43,11 @@ class TripResumeActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize()) { innerPadding ->
                     TripResume(
                         modifier = Modifier.padding(innerPadding),
+                        destiny = destiny,
+                        duration = duration,
+                        dailyBudget = dailyBudget,
+                        accommodation = accommodation,
+                        services = services,
                     )
                 }
             }
@@ -45,53 +57,109 @@ class TripResumeActivity : ComponentActivity() {
 }
 
 @Composable
-fun TripResume(modifier: Modifier = Modifier){
+fun TripResume(
+    modifier: Modifier = Modifier,
+               destiny: String,
+               duration: Int,
+               dailyBudget: Double,
+               accommodation: String,
+               services : List<String>
+    ){
+
+
+    val accommodationOptions = mapOf(
+        "Econômica" to 1.0,
+        "Conforto" to 1.5,
+        "Luxo" to 2.2
+    )
+    val servicesOptions = mapOf(
+        "Transporte" to 300.0,
+        "Alimentação" to 50.0,
+        "Passeios" to 120.0
+    )
+
+    fun calculateTotal() : Double {
+        val totalWithAccommodation = (dailyBudget * duration) *
+                accommodationOptions.getValue(accommodation)
+
+        val totalServices = services.sumOf { service ->
+            val value = servicesOptions.getValue(service)
+            if(service == "Transporte"){
+                value
+            }else{
+                value*duration
+            }
+        }
+        return totalWithAccommodation + totalServices
+    }
+
     Column(
-        modifier = modifier.fillMaxWidth().padding(5.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(5.dp),
 
         ) {
         Text(
-            modifier = Modifier.fillMaxWidth().padding(10.dp),
-            text =  "Trip Resume",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            text =  "Informações da Viagem",
             fontWeight = FontWeight.Bold,
             fontSize = 24.sp,
             textAlign = TextAlign.Center
 
         )
 
-        Text(text =  "Destino: ")
+        Text(
+            modifier = Modifier.padding(10.dp),
+            text =  "Destino: ${destiny}"
+        )
+        Text(
+            modifier = Modifier.padding(10.dp),
+            text =  "Número de Dias: ${duration}"
+        )
+        Text(
+            modifier = Modifier.padding(10.dp),
+            text =  "Orçamento Diário: ${dailyBudget}"
+        )
 
-        Text(text =  "Número de Dias: ")
+        Text(
+            modifier = Modifier.padding(10.dp),
+            text =  "Acomodação: ${accommodation} "
+        )
+        Text(
+            modifier = Modifier.padding(10.dp),
+            text =  "Serviços: ${services.joinToString(", ")}"
+        )
+        Text( modifier = Modifier.padding(10.dp),
+            text =  "Total:  ${"%.2f".format(calculateTotal())}"
+        )
 
-        Text(text =  "Orçamento Diário:  ")
 
-        Text(text =  "Acomodação:")
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            onClick = {}
 
-        Text(text =  "Serviços: ")
-
-        Text(text =  "Total:")
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically
         ) {
-            Button(
-                modifier = Modifier.fillMaxWidth().padding(10.dp),
-                onClick = {}
-
-            ) {
-                Text(text = "Reiniciar")
-            }
-
+            Text(text = "Reiniciar")
         }
 
 
     }
-
 
 }
 
 @Preview(showBackground = true)
 @Composable
 fun TripResumePreview(){
-    TripResume()
+    TripResume(
+        Modifier,
+        "Praia",
+        1,
+        1.0,
+        "Luxo",
+        listOf("Alimentação")
+    )
 }
