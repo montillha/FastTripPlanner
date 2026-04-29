@@ -38,7 +38,7 @@ class TripOptionsActivity : ComponentActivity() {
         setContent {
             FastTripPlannerTheme {
                 Scaffold(
-                    topBar = {FastTripPlannerTopBar()},
+                    topBar = {FastTripPlannerTopBar(onBack = {finish()})},
                     modifier = Modifier.fillMaxSize()) { innerPadding ->
                     TripOptions(
                         modifier = Modifier.padding(innerPadding),
@@ -145,26 +145,15 @@ fun TripOptions(modifier: Modifier = Modifier, destiny: String,duration:String, 
                     "Passeios → + R\$ 120/dia"
         )
 
-        Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(20.dp)
-        ) {
             Button(
+                modifier = Modifier.fillMaxWidth().padding(20.dp),
                 onClick = {}
             ) {
                 Text(text ="Calcular")
             }
-            Button(
-                onClick = {}
-            ) {
-                Text(text = "Voltar")
-            }
-        }
+
 
     }
-
 
 }
 
