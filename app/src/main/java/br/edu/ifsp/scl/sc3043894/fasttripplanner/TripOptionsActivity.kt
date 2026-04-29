@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
@@ -143,6 +144,24 @@ fun TripOptions(modifier: Modifier = Modifier, destiny: String,duration:String, 
                     "Alimentação → + R\$ 50/dia\n" +
                     "Passeios → + R\$ 120/dia"
         )
+
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp)
+        ) {
+            Button(
+                onClick = {}
+            ) {
+                Text(text ="Calcular")
+            }
+            Button(
+                onClick = {}
+            ) {
+                Text(text = "Voltar")
+            }
+        }
 
     }
 
