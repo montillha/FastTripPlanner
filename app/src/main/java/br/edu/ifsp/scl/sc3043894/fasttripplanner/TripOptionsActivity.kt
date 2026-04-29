@@ -10,11 +10,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -58,14 +60,24 @@ fun TripOptions(modifier: Modifier = Modifier, destiny: String,duration:String, 
         "Conforto",
         "Luxo"
     )
+    val servicesOptions = listOf(
+        "Transporte",
+        "Alimentação",
+        "Passeios"
+    )
 
     var accommodationSelected by rememberSaveable() { mutableStateOf("Econômica") }
+    val servicesSelected  =  rememberSaveable() { mutableStateListOf<String>() }
     Column(
-        modifier = modifier.fillMaxWidth().padding(5.dp),
-        horizontalAlignment = Alignment.CenterHorizontally) {
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(5.dp),
+       ) {
         Text(
-                text = "Escolha de Hospedagem",
-                modifier= Modifier.fillMaxWidth().padding(10.dp),
+                text = "Escolha a Hospedagem",
+                modifier= Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
                 fontSize = 24.sp,
         )
 
@@ -89,7 +101,34 @@ fun TripOptions(modifier: Modifier = Modifier, destiny: String,duration:String, 
             }
         }
 
+        Text(
+            text = "Escolha os Serviços",
+            modifier= Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            fontSize = 24.sp,
+        )
 
+            servicesOptions.forEach { servicesOption->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Checkbox(
+                        checked = servicesSelected.contains(servicesOption),
+                        onCheckedChange = { isChecked ->
+                            if(isChecked){
+                                servicesSelected.add(servicesOption)
+                            }else{
+                                servicesSelected.remove(servicesOption)
+                            }
+                        }
+                    )
+                    Text(
+                        text = servicesOption
+                    )
+                }
+
+        }
 
     }
 
