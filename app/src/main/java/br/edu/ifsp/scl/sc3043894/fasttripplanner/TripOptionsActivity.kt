@@ -1,5 +1,6 @@
 package br.edu.ifsp.scl.sc3043894.fasttripplanner
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -23,6 +24,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,8 +35,8 @@ class TripOptionsActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         val destiny = intent.getStringExtra("EXTRA_DESTINY") ?:""
-        val duration = intent.getStringExtra("EXTRA_DURATION") ?:""
-        val  dailyBudget = intent.getStringExtra("EXTRA_DAILY_BUDGET") ?:""
+        val duration = intent.getIntExtra("EXTRA_DURATION",1)
+        val dailyBudget = intent.getDoubleExtra("EXTRA_DAILY_BUDGET",1.0)
         setContent {
             FastTripPlannerTheme {
                 Scaffold(
@@ -54,7 +56,9 @@ class TripOptionsActivity : ComponentActivity() {
 }
 
 @Composable
-fun TripOptions(modifier: Modifier = Modifier, destiny: String,duration:String, dailyBudget: String){
+fun TripOptions(modifier: Modifier = Modifier, destiny: String, duration: Int, dailyBudget: Double){
+
+    val context = LocalContext.current
 
     val accommodationOptions = listOf(
         "Econômica",
@@ -147,7 +151,15 @@ fun TripOptions(modifier: Modifier = Modifier, destiny: String,duration:String, 
 
             Button(
                 modifier = Modifier.fillMaxWidth().padding(20.dp),
-                onClick = {}
+                onClick = {
+                    val intent = Intent(context, TripResumeActivity::class.java)
+                    intent.putExtra("EXTRA_DESTINY",destiny)
+                    intent.putExtra("EXTRA_DURATION",duration)
+                    intent.putExtra("EXTRA_DAILY_BUDGET",dailyBudget)
+                    intent.putExtra("EXTRA_ACCOMMODATION",accommodationSelected)
+                    intent.putExtra("EXTRA_SERVICES", ArrayList(servicesSelected))
+                    context.startActivity(intent)
+                }
             ) {
                 Text(text ="Calcular")
             }
@@ -161,7 +173,7 @@ fun TripOptions(modifier: Modifier = Modifier, destiny: String,duration:String, 
 @Composable
 fun TripOptionsPreview(){
     FastTripPlannerTheme() {
-        TripOptions(Modifier,"","","")
+        TripOptions(Modifier,"",1,1.0)
     }
 }
 
