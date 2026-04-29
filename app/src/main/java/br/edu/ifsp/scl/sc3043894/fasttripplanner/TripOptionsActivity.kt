@@ -102,6 +102,14 @@ fun TripOptions(modifier: Modifier = Modifier, destiny: String,duration:String, 
         }
 
         Text(
+            modifier = Modifier.padding(10.dp),
+            text = "Econômica → 1.0\n" +
+                    "Conforto → 1.5\n" +
+                    "Luxo → 2.2"
+        )
+
+
+        Text(
             text = "Escolha os Serviços",
             modifier= Modifier
                 .fillMaxWidth()
@@ -129,6 +137,12 @@ fun TripOptions(modifier: Modifier = Modifier, destiny: String,duration:String, 
                 }
 
         }
+        Text(
+            modifier = Modifier.padding(10.dp),
+            text = "Transporte → + R\$ 300\n" +
+                    "Alimentação → + R\$ 50/dia\n" +
+                    "Passeios → + R\$ 120/dia"
+        )
 
     }
 
