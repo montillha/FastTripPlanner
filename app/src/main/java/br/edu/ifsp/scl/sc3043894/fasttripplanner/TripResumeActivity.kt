@@ -98,6 +98,7 @@ fun TripResume(
             fillMaxWidth()
                 .verticalScroll(rememberScrollState())
                 .padding(10.dp)
+
         },
 
         ) {
@@ -105,37 +106,18 @@ fun TripResume(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp),
-            text =  "Informações da Viagem",
+            text = "Informações da Viagem",
             fontWeight = FontWeight.Bold,
             fontSize = 24.sp,
             textAlign = TextAlign.Center
-
         )
 
-        Text(
-            modifier = Modifier.padding(10.dp),
-            text =  "Destino: ${destiny}"
-        )
-        Text(
-            modifier = Modifier.padding(10.dp),
-            text =  "Número de Dias: ${duration}"
-        )
-        Text(
-            modifier = Modifier.padding(10.dp),
-            text =  "Orçamento Diário: ${dailyBudget}"
-        )
-
-        Text(
-            modifier = Modifier.padding(10.dp),
-            text =  "Acomodação: ${accommodation} "
-        )
-        Text(
-            modifier = Modifier.padding(10.dp),
-            text =  "Serviços: ${services.joinToString(", ")}"
-        )
-        Text( modifier = Modifier.padding(10.dp),
-            text =  "Total:  ${"%.2f".format(calculateTotal())}"
-        )
+        TripText("Destino: ${destiny}")
+        TripText("Número de Dias: ${duration}")
+        TripText("Orçamento Diário: ${"%.2f".format(dailyBudget)}")
+        TripText("Acomodação:  ${accommodation}")
+        TripText("Serviços: ${services.joinToString(", ")}")
+        TripText("Total:  ${"%.2f".format(calculateTotal())}")
 
 
         Button(
@@ -160,6 +142,14 @@ fun TripResume(
 
     }
 
+}
+
+@Composable
+fun TripText(text: String) {
+    Text(
+        modifier = Modifier.fillMaxWidth().padding(20.dp,10.dp),
+        text = text
+    )
 }
 
 @Preview(showBackground = true)
