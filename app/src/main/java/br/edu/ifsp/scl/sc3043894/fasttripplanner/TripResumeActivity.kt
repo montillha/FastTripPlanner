@@ -1,5 +1,6 @@
 package br.edu.ifsp.scl.sc3043894.fasttripplanner
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -66,6 +68,7 @@ fun TripResume(
                services : List<String>
     ){
 
+    val context = LocalContext.current
 
     val accommodationOptions = mapOf(
         "Econômica" to 1.0,
@@ -140,7 +143,16 @@ fun TripResume(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp),
-            onClick = {}
+            onClick = {
+                val intent = Intent(context, MainActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                }
+
+                //FLAG_ACTIVITY_CLEAR_TOP - remove tela 3 e 2 da pilha e volta para a tela 1
+                //FLAG_ACTIVITY_NEW_TASK - informa em que tarefa inicia a tela 1
+
+                context.startActivity(intent)
+            }
 
         ) {
             Text(text = "Reiniciar")
