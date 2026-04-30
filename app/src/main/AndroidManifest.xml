@@ -15,9 +15,6 @@
             android:name=".TripResumeActivity"
             android:exported="false" />
         <activity
-            android:name=".TripResume"
-            android:exported="false" />
-        <activity
             android:name=".TripOptionsActivity"
             android:exported="false" />
         <activity
