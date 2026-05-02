@@ -47,6 +47,10 @@ total = basecost + extras
 - Material Design 3
 - Minimum Android SDK: API 26 (Android 8.0)
 
+## Demo
+
+[Watch the app navigation video](https://drive.google.com/file/d/12h31woBa_n7ZMyc_b5eO7jmjz0pCzP_N/view?usp=drive_link)
+
 ## How to run
 
 1. Clone the repository
