@@ -73,14 +73,25 @@ fun TripOptions(modifier: Modifier = Modifier, destiny: String, duration: Int, d
         "Passeios"
     )
 
+    var economicMode by rememberSaveable() {mutableStateOf(false) }
     var accommodationSelected by rememberSaveable() { mutableStateOf("Econômica") }
     val servicesSelected  =  rememberSaveable() { mutableStateListOf<String>() }
+
     Column(
         modifier = modifier
             .fillMaxWidth()
             .verticalScroll(rememberScrollState())
             .padding(5.dp),
        ) {
+
+        Text(
+            text = "Modo Econômico",
+            modifier= Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            fontSize = 24.sp,
+        )
+
         Text(
                 text = "Escolha a Hospedagem",
                 modifier= Modifier
@@ -88,6 +99,26 @@ fun TripOptions(modifier: Modifier = Modifier, destiny: String, duration: Int, d
                     .padding(10.dp),
                 fontSize = 24.sp,
         )
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Checkbox(
+                checked = economicMode,
+                onCheckedChange = { isChecked ->
+                    if(isChecked){
+                        economicMode = true
+                        servicesSelected.remove("Passeios")
+                        accommodationSelected = "Econômica"
+                    }else{
+                        economicMode = false
+                    }
+                }
+            )
+            Text( text= " Ativar Modo Economico")
+        }
+
+
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -100,7 +131,8 @@ fun TripOptions(modifier: Modifier = Modifier, destiny: String, duration: Int, d
                 ) {
                     RadioButton(
                         selected = accommodationSelected == tripOption,
-                        onClick = { accommodationSelected = tripOption }
+                        onClick = { accommodationSelected = tripOption },
+                        enabled = !economicMode
                     )
                     Text(
                         text = tripOption
@@ -126,6 +158,10 @@ fun TripOptions(modifier: Modifier = Modifier, destiny: String, duration: Int, d
         )
 
             servicesOptions.forEach { servicesOption->
+                var enable = true
+                if(servicesOption == "Passeios" && economicMode){
+                    enable = false
+                }
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -137,7 +173,9 @@ fun TripOptions(modifier: Modifier = Modifier, destiny: String, duration: Int, d
                             }else{
                                 servicesSelected.remove(servicesOption)
                             }
-                        }
+                        },
+                        enabled = enable
+
                     )
                     Text(
                         text = servicesOption
@@ -161,6 +199,7 @@ fun TripOptions(modifier: Modifier = Modifier, destiny: String, duration: Int, d
                     intent.putExtra("EXTRA_DAILY_BUDGET",dailyBudget)
                     intent.putExtra("EXTRA_ACCOMMODATION",accommodationSelected)
                     intent.putExtra("EXTRA_SERVICES", ArrayList(servicesSelected))
+                    intent.putExtra("EXTRA_ECONOMIC_MODE",economicMode)
                     context.startActivity(intent)
                 }
             ) {

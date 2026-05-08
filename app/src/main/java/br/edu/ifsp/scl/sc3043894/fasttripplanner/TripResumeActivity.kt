@@ -34,6 +34,7 @@ class TripResumeActivity : ComponentActivity() {
         val dailyBudget = intent.getDoubleExtra("EXTRA_DAILY_BUDGET",1.0)
         val accommodation = intent.getStringExtra("EXTRA_ACCOMMODATION") ?: ""
         val services = intent.getStringArrayListExtra("EXTRA_SERVICES")?: arrayListOf()
+        val economicMode = intent.getBooleanExtra("EXTRA_ECONOMIC_MODE",false)
 
         setContent {
             FastTripPlannerTheme {
@@ -47,6 +48,7 @@ class TripResumeActivity : ComponentActivity() {
                         dailyBudget = dailyBudget,
                         accommodation = accommodation,
                         services = services,
+                        economicMode =  economicMode
                     )
                 }
             }
@@ -58,11 +60,13 @@ class TripResumeActivity : ComponentActivity() {
 @Composable
 fun TripResume(
     modifier: Modifier = Modifier,
-               destiny: String,
-               duration: Int,
-               dailyBudget: Double,
-               accommodation: String,
-               services : List<String>
+    destiny: String,
+    duration: Int,
+    dailyBudget: Double,
+    accommodation: String,
+    services : List<String>,
+    economicMode: Boolean
+
     ){
 
     val context = LocalContext.current
@@ -79,7 +83,11 @@ fun TripResume(
     )
 
     fun calculateTotal() : Double {
-        val totalWithAccommodation = (dailyBudget * duration) *
+        var actualDailyBudget = dailyBudget;
+        if(economicMode){
+             actualDailyBudget -= actualDailyBudget*0.15
+        }
+        val totalWithAccommodation = (actualDailyBudget * duration) *
                 accommodationOptions.getValue(accommodation)
 
         val totalServices = services.sumOf { service ->
@@ -161,6 +169,7 @@ fun TripResumePreview(){
         1,
         1.0,
         "Luxo",
-        listOf("Alimentação")
+        listOf("Alimentação"),
+        false
     )
 }
